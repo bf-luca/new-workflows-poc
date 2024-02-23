@@ -16,9 +16,9 @@ jobs:
             echo "So let me tell you how to do that: \n"
             echo "You will need to create a PAT (new) with write access to this repos Contents."
             echo "Then use cURL to trigger the webhook like this:"
-            echo "curl -X POST https://api.github.com/repos/${{ github.action_repository }}/dispatches \ "
+            echo "curl -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \ "
             echo "    -H 'Accept: application/vnd.github+json' \ "
-            echo "    -H 'Authorization: Bearer <PAT GOES HERE>' \ "
+            echo "    -H 'Authorization: Bearer <YOUR PAT GOES HERE>' \ "
             echo "    -d '{"event_type": "critical-css"}'""
 
 
