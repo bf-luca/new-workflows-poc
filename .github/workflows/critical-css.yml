@@ -18,7 +18,7 @@ jobs:
             Then use it to cURL to trigger the webhook like this:
             curl -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \\ \n
                -H 'Accept: application/vnd.github+json' \\ \n
-                -H 'Authorization:${{ 'Bea }}rer' }} <'YOUR PAT GOES HERE>' \\ \n
+                -H 'Authorization:'${{ 'Bea' }}rer' <'YOUR PAT GOES HERE>' \\ \n
                 -d '{\"event_type\": \"critical-css\"}'"
             
             echo -e "$message"
