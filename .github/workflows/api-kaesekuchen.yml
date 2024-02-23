@@ -70,6 +70,6 @@ jobs:
     environment: ${{ needs.variables.outputs.ENVIRONMENT }}
     steps:
       - run: echo "What have you done?!?!???? Everything is broken"
-      - run: exit 1
-        continue-on-error: true
-      - run: echo "Just kidding:)"
+      #- run: exit 1
+      #  continue-on-error: true
+      - run: echo "Just kidding:) Everything is fine!"
