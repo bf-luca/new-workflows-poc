@@ -62,3 +62,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-push-deploy
     environment: ${{ inputs.ENVIRONMENT }}
+    steps:
+      - run: echo "What have you done?!?!???? Everything is broken"
+      - run: exit 1
+        continue-on-error: true
+      - run: echo "Just kidding:)"
