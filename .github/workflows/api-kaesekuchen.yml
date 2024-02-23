@@ -42,7 +42,7 @@ jobs:
           fi
 
       - name: Print Variable Summary
-        run:
+        run: |
           echo "ENVIRONMENT is $ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
           echo "ANSWER is $ANSWER" >> $GITHUB_STEP_SUMMARY
 
