@@ -43,8 +43,8 @@ jobs:
 
       - name: Print Variable Summary
         run:
-          echo "§ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
-          echo "§ANSWER" >> $GITHUB_STEP_SUMMARY
+          echo "ENVIRONMENT is $ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
+          echo "ANSWER is $ANSWER" >> $GITHUB_STEP_SUMMARY
 
 
   setup-and-pre-tests:
