@@ -11,6 +11,7 @@ on:
           - dev-01
           - dev-02
           - dev-03
+          - staging
       REBUILD_IMAGE:
         type: boolean
         description: Force an image rebuild
@@ -26,10 +27,14 @@ on:
       - "kaesekuchen/**"
 
 jobs:
-  define-variables:
+  variables:
     runs-on: ubuntu-latest
+    outputs:
+      ENVIRONMENT: ${{ steps.set-variables.outputs.ENVIRONMENT}}
+      ANSWER: ${{ steps.set-variables.outputs.ANSWER}}
     steps:
       - name: Set Variables
+        id: set-variables
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             # Set values based on manual run
@@ -37,33 +42,33 @@ jobs:
             echo "ANSWER=420" >> $GITHUB_OUTPUT
           else
             # Set values based on merge
-            echo "ENVIRONMENT=${{ github.ref == 'refs/heads/master' && 'production' || 'staging' }}" >> $GITHUB_OUTPUT
+            echo "ENVIRONMENT='production' >> $GITHUB_OUTPUT
             echo "ANSWER=42" >> $GITHUB_OUTPUT
           fi
 
       - name: Print Variable Summary
         run: |
-          echo "ENVIRONMENT is $ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
+          echo "ENVIRONMENT is ${{ steps.set-variables.outputs.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
           echo "ANSWER is $ANSWER" >> $GITHUB_STEP_SUMMARY
 
 
   setup-and-pre-tests:
-    needs: define-variables
+    needs: variables
     runs-on: ubuntu-latest
     steps:
       - run: echo "Doing some setup and test prior to deploying kaesekuchen on $ENVIRONMENT"
   
   build-push-deploy:
     runs-on: ubuntu-latest
-    needs: setup-and-pre-tests
-    environment: ${{ inputs.ENVIRONMENT }}
+    needs: [ variables, setup-and-pre-tests ]
+    environment: ${{ needs.variables.outputs.ENVIRONMENT }}
     steps:
-      - run: echo "Build Push Deploy kaesekuchen on ${{ inputs.ENVIRONMENT }}"
+      - run: echo "Build Push Deploy kaesekuchen on ${{ needs.variables.outputs.ENVIRONMENT }}"
   
   regression-test:
     runs-on: ubuntu-latest
-    needs: build-push-deploy
-    environment: ${{ inputs.ENVIRONMENT }}
+    needs: [ variables, build-push-deploy ]
+    environment: ${{ needs.variables.outputs.ENVIRONMENT }}
     steps:
       - run: echo "What have you done?!?!???? Everything is broken"
       - run: exit 1
