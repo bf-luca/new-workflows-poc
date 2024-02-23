@@ -29,18 +29,23 @@ jobs:
   define-variables:
     runs-on: ubuntu-latest
     steps:
-      - name: Check event type
-        id: step1
+      - name: Set Variables
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             # Set values based on manual run
             echo "ENVIRONMENT=${{ inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
-            echo "ANSWER==420" >> $GITHUB_OUTPUT
+            echo "ANSWER=420" >> $GITHUB_OUTPUT
           else
             # Set values based on merge
             echo "ENVIRONMENT=${{ github.ref == 'refs/heads/master' && 'production' || 'staging' }}" >> $GITHUB_OUTPUT
-            echo "ANSWER==42" >> $GITHUB_OUTPUT
+            echo "ANSWER=42" >> $GITHUB_OUTPUT
           fi
+
+      - name: Print Variable Summary
+        run:
+          echo "§ENVIRONMENT" >> $GITHUB_STEP_SUMMARY
+          echo "§ANSWER" >> $GITHUB_STEP_SUMMARY
+
 
   setup-and-pre-tests:
     needs: define-variables
