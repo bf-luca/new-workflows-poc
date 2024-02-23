@@ -21,7 +21,7 @@ on:
     paths:
       - "kaesekuchen/**"
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - "kaesekuchen/**"
 

@@ -21,7 +21,7 @@ on:
     paths:
       - "kirschlolli/**"
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
     paths:
       - "kirschlolli/**"
 
