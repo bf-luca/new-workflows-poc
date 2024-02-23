@@ -12,7 +12,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     steps:
         - run: |
-            message="You ran the webhook via the workflow-dispatch, but it is meant to be called via webhook.
+            message=":exclamation:You ran the webhook via the workflow-dispatch, but it is meant to be called via webhook:exclamation:
             So let me tell you how to do that: \n
             You will need to create a PAT (new) with write access to this repos Contents.
             Then use cURL to trigger the webhook like this:
@@ -22,7 +22,7 @@ jobs:
                 -d '{\"event_type\": \"critical-css\"}'"
             
             echo -e "$message"
-            echo -e "$message" >> $GITHUB_OUTPUT
+            echo -e "$message" >> $GITHUB_STEP_SUMMARY
 
 
   build-critical-css:
