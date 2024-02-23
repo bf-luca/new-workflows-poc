@@ -28,9 +28,6 @@ on:
 jobs:
   define-variables:
     runs-on: ubuntu-latest
-    outputs:
-      step1_output: ${{ steps.step1.outputs }}
-
     steps:
       - name: Check event type
         id: step1

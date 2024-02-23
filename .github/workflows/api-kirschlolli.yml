@@ -1,4 +1,4 @@
-name: api-kaesekuchen
+name: api-kirschlolli
 
 on:
   workflow_dispatch:
