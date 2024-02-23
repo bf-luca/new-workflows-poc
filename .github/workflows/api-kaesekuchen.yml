@@ -49,7 +49,7 @@ jobs:
       - name: Print Variable Summary
         run: |
           echo "ENVIRONMENT is ${{ steps.set-variables.outputs.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
-          echo "ANSWER is $ANSWER" >> $GITHUB_STEP_SUMMARY
+          echo "ANSWER is ${{ steps.set-variables.outputs.ANSWER }}" >> $GITHUB_STEP_SUMMARY
 
 
   setup-and-pre-tests:
