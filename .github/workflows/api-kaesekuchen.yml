@@ -34,12 +34,12 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             # Set values based on manual run
-            echo "::set-output name=ENVIRONMENT::${{ inputs.ENVIRONMENT }}"
-            echo "::set-output name=ANSWER::420"
+            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
+            echo "ANSWER==420" >> $GITHUB_OUTPUT
           else
             # Set values based on merge
-            echo "::set-output name=ENVIRONMENT::${{ github.ref == 'refs/heads/master' && 'production' || 'staging' }}"
-            echo "::set-output name=ANSWER::42"
+            echo "ENVIRONMENT=${{ github.ref == 'refs/heads/master' && 'production' || 'staging' }}" >> $GITHUB_OUTPUT
+            echo "ANSWER==42" >> $GITHUB_OUTPUT
           fi
 
   setup-and-pre-tests:
