@@ -42,7 +42,7 @@ jobs:
             echo "ANSWER=420" >> $GITHUB_OUTPUT
           else
             # Set values based on merge
-            echo "ENVIRONMENT='production' >> $GITHUB_OUTPUT
+            echo "ENVIRONMENT='production'" >> $GITHUB_OUTPUT
             echo "ANSWER=42" >> $GITHUB_OUTPUT
           fi
 
