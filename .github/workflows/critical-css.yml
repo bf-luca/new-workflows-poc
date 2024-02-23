@@ -12,14 +12,17 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     steps:
         - run: |
-            echo "You ran the webhook via the workflow-dispatch, but it is meant to be called via webhook."
-            echo "So let me tell you how to do that: \n"
-            echo "You will need to create a PAT (new) with write access to this repos Contents."
-            echo "Then use cURL to trigger the webhook like this:"
-            echo "curl -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \ "
-            echo "    -H 'Accept: application/vnd.github+json' \ "
-            echo "    -H 'Authorization:${{ '{' }} Bearer <YOUR PAT GOES HERE>'${{ '}' }} \ "
-            echo "    -d '{\"event_type\": \"critical-css\"}'"
+            message="You ran the webhook via the workflow-dispatch, but it is meant to be called via webhook.
+            So let me tell you how to do that: \n
+            You will need to create a PAT (new) with write access to this repos Contents.
+            Then use cURL to trigger the webhook like this:
+            curl -X POST https://api.github.com/repos/${{ github.repository }}/dispatches \
+               -H 'Accept: application/vnd.github+json' \
+                -H 'Authorization:${{ 'Bearer' }} <${{ 'YOUR PAT' }} GOES HERE>' \
+                -d '{\"event_type\": \"critical-css\"}'"
+            
+            echo -e "$message"
+            echo -e "$message" >> $GITHUB_OUTPUT
 
 
   build-critical-css:
