@@ -19,10 +19,12 @@ on:
   pull_request:
     types: [ opened, edited ]
     paths:
+      - ".github/workflows/api-kirschlolli.yml"
       - "kirschlolli/**"
   push:
     branches: [ "main" ]
     paths:
+      - ".github/workflows/api-kirschlolli.yml"
       - "kirschlolli/**"
 
 jobs:
