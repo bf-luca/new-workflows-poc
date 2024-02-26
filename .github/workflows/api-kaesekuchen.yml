@@ -77,7 +77,6 @@ jobs:
           else
               echo "String does not contain the dev-XX pattern"
           fi
-      
 
   setup-and-pre-tests:
     needs: variables
