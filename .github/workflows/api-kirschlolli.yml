@@ -36,8 +36,8 @@ on:
 jobs:
   unit-tests:
     if: |
-      "${{ github.event_name }}" == "pull_request" ||
-      "${{ inputs.PERFORM_TESTS }}" == "true"
+      github.event_name == 'pull_request' ||
+      inputs.PERFORM_TESTS == 'true'
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     steps:
