@@ -8,9 +8,9 @@ on:
         description: Deploy to environment
         required: true
         options:
-          - "01"
-          - "02"
-          - "03"
+          - '01'
+          - '02'
+          - '03'
           - staging
       REBUILD_IMAGE:
         type: boolean
