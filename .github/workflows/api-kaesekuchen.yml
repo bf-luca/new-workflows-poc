@@ -62,7 +62,7 @@ jobs:
       env-tag: ${{ steps.get-env.outputs }}
     steps:
       - name: Get repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Get Commit message
         id: get-commit-message
@@ -73,7 +73,7 @@ jobs:
         run: |
           if [[ ${{ steps.get-commit-message.outputs }} =~ dev-([0-9][0-9]) ]]; then
               matched_pattern="${BASH_REMATCH[1]}"
-              echo "::set-output name=headCommitMsg::$matched_pattern"
+              echo "::set-output name=env-tag::$matched_pattern"
           else
               echo "String does not contain the dev-XX pattern"
           fi
