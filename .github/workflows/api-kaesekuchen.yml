@@ -55,6 +55,9 @@ jobs:
           echo "ENVIRONMENT is ${{ steps.set-variables.outputs.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
           echo "ANSWER is ${{ steps.set-variables.outputs.ANSWER }}" >> $GITHUB_STEP_SUMMARY
       
+      - name: Get repo
+        uses: actions/checkout@v3
+
       - name: Tags
         run: echo "$(git show -s --format=%s)" 
 
