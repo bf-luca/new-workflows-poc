@@ -8,9 +8,9 @@ on:
         description: Deploy to environment
         required: true
         options:
-          - dev-01
-          - dev-02
-          - dev-03
+          - 01
+          - 02
+          - 03
           - staging
       REBUILD_IMAGE:
         type: boolean
@@ -38,6 +38,10 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             # Set values based on manual run
+            echo "ENVIRONMENT=dev-${{ inputs.ENVIRONMENT == 'dev' && format('dev-{0}', inputs.ENVIRONMENT) || inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
+            echo "ANSWER=420" >> $GITHUB_OUTPUT
+          elseif [ "${{ github.event_name }}" == "pull_request" ]; then
+            # Set values based on manual run
             echo "ENVIRONMENT=${{ inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
             echo "ANSWER=420" >> $GITHUB_OUTPUT
           else
@@ -50,12 +54,15 @@ jobs:
         run: |
           echo "ENVIRONMENT is ${{ steps.set-variables.outputs.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
           echo "ANSWER is ${{ steps.set-variables.outputs.ANSWER }}" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Tags
+        run: echo "$(git show -s --format=%s)" 
 
   setup-and-pre-tests:
     needs: variables
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Doing some setup and test prior to deploying kaesekuchen on $ENVIRONMENT"
+      - run: echo "Performing the setup and doing some testing prior to deploying kaesekuchen on $ENVIRONMENT"
   
   build-push-deploy:
     runs-on: ubuntu-latest
