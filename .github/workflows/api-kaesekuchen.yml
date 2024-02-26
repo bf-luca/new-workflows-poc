@@ -12,6 +12,11 @@ on:
           - '02'
           - '03'
           - staging
+      PERFORM_TESTS:
+        type: boolean
+        description: Force an image rebuild
+        required: false
+        default: false
       REBUILD_IMAGE:
         type: boolean
         description: Force an image rebuild

@@ -8,9 +8,15 @@ on:
         description: Deploy to environment
         required: true
         options:
-          - dev-01
-          - dev-02
-          - dev-03
+          - '01'
+          - '02'
+          - '03'
+          - staging
+      PERFORM_TESTS:
+        type: boolean
+        description: If the (unit) tests should be performed or not
+        required: false
+        default: true
       FORCE_IMAGE_REBUILD:
         type: boolean
         description: Force an image rebuild
@@ -28,7 +34,10 @@ on:
       - "kirschlolli/**"
 
 jobs:
-  setup-and-pre-tests:
+  unit-tests:
+    if: |
+      "${{ github.event_name }}" == "workflow_dispatch" ||
+      "${{ inputs.PERFORM_TESTS }}"
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     steps:
@@ -36,7 +45,6 @@ jobs:
   
   build-push-deploy:
     runs-on: ubuntu-latest
-    needs: setup-and-pre-tests
     environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - run: echo "Rebuilding image ${{ inputs.FORCE_IMAGE_REBUILD }}"
