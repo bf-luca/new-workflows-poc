@@ -62,6 +62,7 @@ jobs:
         include:
           - env: production
             project-id: 420
+    environment: ${{ matrix.env }}
 
     steps:
       - run: echo "Rebuilding image ${{ inputs.FORCE_IMAGE_REBUILD }}"
