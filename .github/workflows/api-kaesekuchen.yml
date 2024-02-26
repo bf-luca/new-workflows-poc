@@ -66,14 +66,14 @@ jobs:
 
       - name: Get Commit message
         id: get-commit-message
-        run: echo "::set-output name=commit-message::$(git show -s --format=%s)"
+        run: echo "commit-message=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
       
       - name: Get environment
         id: get-env
         run: |
           if [[ ${{ steps.get-commit-message.outputs }} =~ dev-([0-9][0-9]) ]]; then
               matched_pattern="${BASH_REMATCH[1]}"
-              echo "::set-output name=env-tag::$matched_pattern"
+              echo "env-tag=$matched_pattern" >> $GITHUB_OUTPUT
           else
               echo "String does not contain the dev-XX pattern"
           fi
