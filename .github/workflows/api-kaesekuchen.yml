@@ -40,7 +40,7 @@ jobs:
             # Set values based on manual run
             echo "ENVIRONMENT=dev-${{ inputs.ENVIRONMENT == 'dev' && format('dev-{0}', inputs.ENVIRONMENT) || inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
             echo "ANSWER=420" >> $GITHUB_OUTPUT
-          elseif [ "${{ github.event_name }}" == "pull_request" ]; then
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
             # Set values based on manual run
             echo "ENVIRONMENT=${{ inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
             echo "ANSWER=420" >> $GITHUB_OUTPUT
