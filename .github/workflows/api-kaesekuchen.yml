@@ -49,6 +49,7 @@ jobs:
             echo "ENVIRONMENT='production'" >> $GITHUB_OUTPUT
             echo "ANSWER=42" >> $GITHUB_OUTPUT
           fi
+          
 
       - name: Print Variable Summary
         run: |
