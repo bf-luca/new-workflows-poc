@@ -39,13 +39,30 @@ jobs:
       github.event_name == 'pull_request' ||
       inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
-    environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - run: echo "Doing some setup and test prior to deploying kirschlolli on ${{ inputs.ENVIRONMENT }}"
   
-  build-push-deploy:
+  build-push-deploy-with-env:
+    if: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - run: echo "Rebuilding image ${{ inputs.FORCE_IMAGE_REBUILD }}"
       - run: echo "Build Push Deploy kirschlolli on ${{ inputs.ENVIRONMENT }}"
+  
+  build-push-deploy-any-env:
+    if: |
+      github.ref == 'refs/heads/master' ||
+      ${{ !inputs.ENVIRONMENT }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: [dev-01, dev-02, dev-03]
+        project-id: [42]
+        include:
+          - env: production
+            project-id: 420
+
+    steps:
+      - run: echo "Rebuilding image ${{ inputs.FORCE_IMAGE_REBUILD }}"
+      - run: echo "Build Push Deploy kirschlolli on ${{ matrix.env }} and project id ${{ matrix.project-id }}"
