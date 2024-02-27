@@ -63,28 +63,28 @@ jobs:
           echo "ENVIRONMENT is ${{ steps.set-variables.outputs.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
           echo "ANSWER is ${{ steps.set-variables.outputs.ANSWER }}" >> $GITHUB_STEP_SUMMARY
     
-  tags:
-    runs-on: ubuntu-latest
-    outputs:
-      commit-message: ${{ steps.get-commit-message.outputs }}
-      env-tag: ${{ steps.get-env.outputs }}
-    steps:
-      - name: Get repo
-        uses: actions/checkout@v4
-
-      - name: Get Commit message
-        id: get-commit-message
-        run: echo "commit-message=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
-      
-      - name: Get environment
-        id: get-env
-        run: |
-          if [[ ${{ steps.get-commit-message.outputs }} =~ dev-([0-9][0-9]) ]]; then
-              matched_pattern="${BASH_REMATCH[1]}"
-              echo "env-tag=$matched_pattern" >> $GITHUB_OUTPUT
-          else
-              echo "String does not contain the dev-XX pattern"
-          fi
+#  tags:
+#    runs-on: ubuntu-latest
+#    outputs:
+#      commit-message: ${{ steps.get-commit-message.outputs }}
+#      env-tag: ${{ steps.get-env.outputs }}
+#    steps:
+#      - name: Get repo
+#        uses: actions/checkout@v4
+#
+#      - name: Get Commit message
+#        id: get-commit-message
+#        run: echo "commit-message=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
+#      
+#      - name: Get environment
+#        id: get-env
+#        run: |
+#          if [[ ${{ steps.get-commit-message.outputs }} =~ dev-([0-9][0-9]) ]]; then
+#              matched_pattern="${BASH_REMATCH[1]}"
+#              echo "env-tag=$matched_pattern" >> $GITHUB_OUTPUT
+#          else
+#              echo "String does not contain the dev-XX pattern"
+#          fi
 
   setup-and-pre-tests:
     needs: variables
