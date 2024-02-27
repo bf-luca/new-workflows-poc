@@ -1,0 +1,24 @@
+on:
+  workflow_call:
+    inputs:
+      ENVIRONMENT:
+        required: true
+        type: string
+      PROJECT_ID:
+        required: true
+        type: string
+
+jobs:
+  push-build:
+    name: Build push and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Push
+        run: echo "Build and push stuff"
+        
+  deploy-gke:
+    needs: push-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment
+        run: echo "Deploy"
