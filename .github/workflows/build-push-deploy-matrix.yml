@@ -32,4 +32,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deployment
-        run: echo "Deploy"
+        run: echo "Deploy by ${{ github.actor }}"
