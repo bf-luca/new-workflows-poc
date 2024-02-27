@@ -23,7 +23,7 @@ on:
         required: false
         default: true
   pull_request:
-    types: [ opened, edited ]
+    types: [ opened, synchronize ]
     paths:
       - ".github/workflows/api-kaesekuchen.yml"
       - "kaesekuchen/**"
