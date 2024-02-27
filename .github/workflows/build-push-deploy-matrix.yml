@@ -14,17 +14,18 @@ jobs:
       fail-fast: true
     name: Build push and deploy
     runs-on: ubuntu-latest
-    environment: ${{ startsWith('dev-', matrix.ENVIRONMENT) && format('{0}-protected') || matrix.ENVIRONMENT }}
+    environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected') || matrix.ENVIRONMENT }}
     steps:
       - name: Check Skip
-        if: ${{matrix.ENVIRONMENT == 'skip'}}
-        run: echo "You selected skipping the deployment" && exit 1
-        continue-on-error: true
-      - name: Skip everything
-        if: failure()
-        run: echo "Skipping build push"
+        if: ${{ matrix.ENVIRONMENT == 'skip' }}
+        uses: cancel-matrix
+        with:
+          GITHUB_TOKEN: 
+          REPO_FULL_NAME: ${{ github.repository }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          CANCEL_FLAG_NAME:
       - name: Build Push
-        if: success()
+        if: ${{ matrix.ENVIRONMENT != 'skip' }}
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
         
   deploy-gke:

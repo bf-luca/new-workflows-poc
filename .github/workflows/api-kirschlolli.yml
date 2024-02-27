@@ -41,7 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Doing unit test and other stuff prior to deploying kirschlolli on ${{ inputs.ENVIRONMENT }}"
-  
 
   build-push-deploy:
     name: Build push and deploy the 'kirschlolli'-image
