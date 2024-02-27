@@ -20,7 +20,7 @@ jobs:
         if: ${{matrix.ENVIRONMENT == 'skip'}}
         run: echo "You selected skipping the deployment" && exit 1
         continue-on-error: true
-      - name: Build Push
+      - name: Skip everything
         if: failure()
         run: echo "Skipping build push"
       - name: Build Push
