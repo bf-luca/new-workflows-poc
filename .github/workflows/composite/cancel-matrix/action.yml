@@ -30,13 +30,12 @@ runs:
     - name: Get Pending
       id: get-pending
       run: |
-        pending_envs=$(curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
+        PENDING_DATA=$(curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28")
-        echo "$(echo "$pending_envs" | jq -rc 'map(.environment.id)')" >> $GITHUB_OUTPUT
+        PENDING_IDS=$(echo "$PENDING_DATA" | jq -rc 'map(.environment.id)')"
       shell: bash
-        
     - name: Trigger all pending
       run: |
         curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
@@ -44,6 +43,6 @@ runs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          -d '{"environment_ids": ${{ steps.get-pending.outputs.pending_ids }}, "state": "accept", "comment": "Kaesekuchen!"}'
+          -d '{"environment_ids": $PENDING_IDS, "state": "accept", "comment": "Kaesekuchen!"}'
       shell: bash
 
