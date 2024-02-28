@@ -14,7 +14,7 @@ jobs:
       fail-fast: true
     name: Build push and deploy
     runs-on: ubuntu-latest
-    environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected') || matrix.ENVIRONMENT }}
+    environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected', matrix.ENVIRONMENT) || matrix.ENVIRONMENT }}
     steps:
       - name: Check Skip
         if: ${{ matrix.ENVIRONMENT == 'skip' }}
