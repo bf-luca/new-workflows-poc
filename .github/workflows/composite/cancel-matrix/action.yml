@@ -19,13 +19,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set Flag
-      run: |
-        curl -X POST "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/envs" \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: Bearer ${{ inputs.GITHUB_TOKEN }}" \
-          -d '{"${{ inputs.CANCEL_FLAG_NAME }}": "true"}'
-      shell: bash
+    #- name: Set Flag
+    #  run: |
+    #    curl -X POST "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/envs" \
+    #      -H "Accept: application/vnd.github.v3+json" \
+    #      -H "Authorization: Bearer ${{ inputs.GITHUB_TOKEN }}" \
+    #      -d '{"${{ inputs.CANCEL_FLAG_NAME }}": "true"}'
+    #  shell: bash
     - name: Trigger all pending
       run: |
         curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
@@ -33,7 +33,7 @@ runs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          -d '{"environment_ids": [2364991168, 2364989533, 2364986959, 2364985134, 2332175704], "state": "approved", "comment": "Kaesekuchen!"}'
+          -d '{"environment_ids": [2364991168, 2364989533, 2364986959, 2364985134, 2332175704], "state": "rejected", "comment": "Kaesekuchen!"}'
       shell: bash
 
       # 2364991168, 2364989533, 2364986959, 2364985134, 2332175704
