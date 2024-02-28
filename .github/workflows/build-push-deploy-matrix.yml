@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Check Skip
         if: ${{ matrix.ENVIRONMENT == 'skip' }}
-        uses: cancel-matrix
+        uses: ./.github/workflows/composite/cancel-matrix
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_FULL_NAME: ${{ github.repository }}
