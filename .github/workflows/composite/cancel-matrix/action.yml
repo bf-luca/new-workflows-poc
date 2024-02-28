@@ -21,17 +21,13 @@ runs:
   steps:
     - name: Get Pending
       run: |
-        echo "PENDING_DATA=$(curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
+        pending_data=$(curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
-          -H "X-GitHub-Api-Version: 2022-11-28")" >> $GITHUB_ENV
-        echo "PENDING_IDS=$(echo "$PENDING_DATA" | jq -rc 'map(.environment.id)')" >> $GITHUB_ENV
-      shell: bash
-    - name: Was Not Skipped
-      run: |
-        echo pending_skip=$(echo "$PENDING_DATA" | jq '.[] | select(.environment.name == "${{ inputs.SKIP_ENV_NAME }}")')
+          -H "X-GitHub-Api-Version: 2022-11-28")
+        pending_skip=$(echo "$PENDING_DATA" | jq '.[] | select(.environment.name == "${{ inputs.SKIP_ENV_NAME }}")')
         echo "WAS_NOT_SKIPPED=$( [ -n "$pending_skip" ] && echo true || echo false )" >> $GITHUB_ENV
-        echo "Was skipped: ${{ env.WAS_NOT_SKIPPED }}"
+        echo "PENDING_IDS=$(echo "$pending_data" | jq -rc 'map(.environment.id)')" >> $GITHUB_ENV
       shell: bash
     - name: Trigger all pending
       run: |
