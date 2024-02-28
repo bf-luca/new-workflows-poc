@@ -5,6 +5,9 @@ on:
         required: true
         type: string
 
+env:
+  CANCEL_MATRIX: false
+
 jobs:
   push-build:
     strategy:
@@ -29,8 +32,6 @@ jobs:
       - name: Build Push
         if: ${{ matrix.ENVIRONMENT != 'skip' && ! env.CANCEL_MATRIX }}
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
-        env:
-          CANCEL_MATRIX: false
         
   deploy-gke:
     needs: push-build

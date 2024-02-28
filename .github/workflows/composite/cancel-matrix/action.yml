@@ -4,6 +4,8 @@ inputs:
   GITHUB_TOKEN:
     description: 'Token of the workflow used for authorization'
     required: true
+  DEPLOY_PAT:
+    description: 'PAT to allow deployments'
   REPO_FULL_NAME:
     descriptoin: 'Full name of the repo (i.e. "REPO_OWNER/REPO_NAME"). Use: github.event.repository.full_name'
     required: true
@@ -29,7 +31,7 @@ runs:
         curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
           -X POST \
           -H "Accept: application/vnd.github+json" \
-          -H "Authorization: Bearer ${{ inputs.GITHUB_TOKEN }}" \
+          -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           -d '{"environment_ids": [2364991168, 2364989533, 2364986959, 2364985134, 2332175704], "state": "approved", "comment": "Kaesekuchen!"}'
       shell: bash
