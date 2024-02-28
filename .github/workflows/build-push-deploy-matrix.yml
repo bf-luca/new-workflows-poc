@@ -26,7 +26,7 @@ jobs:
         uses: ./.github/workflows/composite/cancel-matrix
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEPLOY_PAT: ${{ secrets.DEPLOY_PAT }}
+          DEPLOY_PAT: ${{ secrets.WF_PAT }}
           REPO_FULL_NAME: ${{ github.repository }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           CANCEL_FLAG_NAME: CANCEL_MATRIX
