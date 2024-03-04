@@ -30,7 +30,7 @@ runs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28")
-        pending_skip=$(echo "$PENDING_DATA" | jq '.[] | select(.environment.name == "${{ inputs.SKIP_ENV_NAME }}")')
+        pending_skip=$(echo "$pending_data" | jq '.[] | select(.environment.name == "${{ inputs.SKIP_ENV_NAME }}")')
         echo "PENDING_IDS=$(echo "$pending_data" | jq -rc 'map(.environment.id)')" >> $GITHUB_ENV
         echo "WAS_SKIPPED=$( [ -n "$pending_skip" ] && echo false || echo true )" >> $GITHUB_OUTPUT
       shell: bash
