@@ -19,7 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Check Skip
-        if: ${{ matrix.ENVIRONMENT == 'skip' }}
         id: check-skip
         uses: ./.github/workflows/composite/cancel-matrix
         with:
@@ -29,7 +28,7 @@ jobs:
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           SKIP_ENV_NAME: "skip"
       - name: Build Push
-        if: ${{ matrix.ENVIRONMENT != 'skip' }}
+        if: ${{ steps.check-skip.outputs.WAS_SKIPPED }}
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
       - name: Skip ok
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED }}
