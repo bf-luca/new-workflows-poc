@@ -30,12 +30,6 @@ jobs:
       - name: Build Push
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
-      - name: Test
-        run: echo ${{ steps.check-skip.outputs.WAS_SKIPPED }}
-        
-  deploy-gke:
-    needs: push-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deployment
+      - name: Deploy
+        if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Deploy by ${{ github.actor }}"
