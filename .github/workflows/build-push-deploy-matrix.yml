@@ -28,11 +28,10 @@ jobs:
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           SKIP_ENV_NAME: "skip"
       - name: Build Push
-        if: ${{ steps.check-skip.outputs.WAS_SKIPPED }}
+        if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
-      - name: Skip ok
-        if: ${{ steps.check-skip.outputs.WAS_SKIPPED }}
-        run: echo "Skipped"
+      - name: Test
+        run: echo ${{ steps.check-skip.outputs.WAS_SKIPPED }}
         
   deploy-gke:
     needs: push-build
