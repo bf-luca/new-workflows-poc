@@ -33,7 +33,7 @@ jobs:
           DEPLOY_PAT: ${{ secrets.WF_PAT }}
           REPO_FULL_NAME: ${{ github.repository }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
-          SKIP_WITH_STATE: "rejected"
+          SKIP_WITH_STATE: ${{ inputs.SKIP_WITH_STATE }}
           SKIP_ENV_NAME: "skip"
       - name: Build Push
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
@@ -41,3 +41,6 @@ jobs:
       - name: Deploy
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Deploy by ${{ github.actor }}"
+      - name: Deploy
+        if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
+        run: 'echo "Skipping all pending deployments: ${{ env.PENDING_NAMES }}" >> $STEP_SUMMARY'
