@@ -41,5 +41,5 @@ runs:
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ inputs.DEPLOY_PAT }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          -d '{"environment_ids": ${{ env.PENDING_IDS }}, "state": "approved", "comment": "Skipped."}'
+          -d '{"environment_ids": ${{ env.PENDING_IDS }}, "state": "rejected", "comment": "Skipped."}'
       shell: bash
