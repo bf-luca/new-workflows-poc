@@ -34,5 +34,5 @@ jobs:
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Deploy by ${{ github.actor }}"
       - name: Approve Skip
-        if: ${{ failure() }}
+        if: ${{ always() }}
         run: echo "Make skipping succeed"
