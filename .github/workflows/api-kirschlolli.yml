@@ -57,4 +57,5 @@ jobs:
     uses: ./.github/workflows/build-push-deploy-matrix.yml
     with:
       PROJECT_ID: 'kirschlolli-420'
+      SKIP_WITH_STATE: 'accepted'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
