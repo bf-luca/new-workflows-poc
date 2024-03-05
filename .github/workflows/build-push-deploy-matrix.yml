@@ -2,8 +2,15 @@ on:
   workflow_call:
     inputs:
       PROJECT_ID:
+        description: "The gcp project id"
         required: true
         type: string
+      SKIP_WITH_STATE:
+        description: "Which state the pending deployments should be deployed when skipped. Either 'rejected' or 'approved'."
+        required: true
+        default: 'rejected'
+        type: string
+      
 
 jobs:
   push-build:
@@ -27,15 +34,11 @@ jobs:
           DEPLOY_PAT: ${{ secrets.WF_PAT }}
           REPO_FULL_NAME: ${{ github.repository }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
+          DEPLOY_WITH_STATE: "rejected"
           SKIP_ENV_NAME: "skip"
       - name: Build Push
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
-        continue-on-error: true
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
       - name: Deploy
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
-        continue-on-error: true
         run: echo "Deploy by ${{ github.actor }}"
-      - name:
-        if: ${{ always() }}
-        run: echo "Hi"
