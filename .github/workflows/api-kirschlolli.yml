@@ -51,14 +51,14 @@ jobs:
       PROJECT_ID: 'kirschlolli-32'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
   
-  build-push-deploy-any-env:
-    name: Build push and deploy the 'kirschlolli'-image
-    if: ${{ inputs.ENVIRONMENT }}
-    uses: ./.github/workflows/build-push-deploy-matrix.yml
-    with:
-      PROJECT_ID: 'kirschlolli-420'
-      SKIP_WITH_STATE: 'approved'
-    secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
+  #build-push-deploy-any-env:
+  #  name: Build push and deploy the 'kirschlolli'-image
+  #  if: ${{ inputs.ENVIRONMENT }}
+  #  uses: ./.github/workflows/build-push-deploy-matrix.yml
+  #  with:
+  #    PROJECT_ID: 'kirschlolli-420'
+  #    SKIP_WITH_STATE: 'approved'
+  #  secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
 
   build-push-deploy-any-env-rejected:
     name: Build push and deploy the 'kirschlolli'-image
