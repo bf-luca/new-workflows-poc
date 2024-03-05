@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Check Skip
         id: check-skip
+        continue-on-error: true
         uses: ./.github/workflows/composite/cancel-matrix
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,9 +30,11 @@ jobs:
           SKIP_ENV_NAME: "skip"
       - name: Build Push
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
+        continue-on-error: true
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
       - name: Deploy
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
+        continue-on-error: true
         run: echo "Deploy by ${{ github.actor }}"
       - name:
         if: ${{ always() }}
