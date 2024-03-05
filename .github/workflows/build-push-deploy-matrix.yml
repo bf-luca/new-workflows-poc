@@ -42,5 +42,5 @@ jobs:
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Deploy by ${{ github.actor }}"
       - name: Notify Skipped
-        if: ${{ steps.check-skip.outputs.WAS_SKIPPED == 'true' }}
-        run: 'echo "Skipping all pending deployments: ${{ env.PENDING_NAMES }}" >> $GITHUB_STEP_SUMMARY'
+        if: ${{ steps.check-skip.outputs.WAS_SKIPPED == 'true' && env.PENDING_NAMES != '[]' }}
+        run: 'echo "Skipping pending deployments: ${{ env.PENDING_NAMES }}" >> $GITHUB_STEP_SUMMARY'
