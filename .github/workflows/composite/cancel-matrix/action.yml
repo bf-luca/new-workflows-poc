@@ -37,9 +37,11 @@ runs:
         pending_skip=$(echo "$pending_data" | jq '.[] | select(.environment.name == "${{ inputs.SKIP_ENV_NAME }}")')
         echo "PENDING_IDS=$(echo "$pending_data" | jq -rc 'map(.environment.id)')" >> $GITHUB_ENV
         echo "PENDING_NAMES=$(echo "$pending_data" | jq -rc 'map(.environment.name)')" >> $GITHUB_ENV
+        echo "WAS_SKIPPED=$( [ -n "$pending_skip" ] && echo false || echo true )" >> $GITHUB_ENV
         echo "WAS_SKIPPED=$( [ -n "$pending_skip" ] && echo false || echo true )" >> $GITHUB_OUTPUT
       shell: bash
     - name: Trigger all pending
+      if: ${{ env.WAS_SKIPPED }}
       run: |
         curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
           -X POST \
