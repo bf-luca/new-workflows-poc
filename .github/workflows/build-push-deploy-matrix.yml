@@ -29,9 +29,10 @@ jobs:
           SKIP_ENV_NAME: "skip"
       - name: Build Push
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
-        continue-on-error: true
         run: echo "Build and push stuff ${{ matrix.PROJECT_ID }}"
       - name: Deploy
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
-        continue-on-error: true
         run: echo "Deploy by ${{ github.actor }}"
+      - name:
+        if: ${{ always() }}
+        run: echo "Hi"
