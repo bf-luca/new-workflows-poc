@@ -41,7 +41,7 @@ runs:
         echo "WAS_SKIPPED=$( [ -n "$pending_skip" ] && echo false || echo true )" >> $GITHUB_OUTPUT
       shell: bash
     - name: Trigger all pending
-      if: ${{ env.WAS_SKIPPED }}
+      if: ${{ env.WAS_SKIPPED == 'true' }}
       run: |
         curl -L https://api.github.com/repos/${{ inputs.REPO_FULL_NAME }}/actions/runs/${{ inputs.WORKFLOW_RUN_ID }}/pending_deployments \
           -X POST \
