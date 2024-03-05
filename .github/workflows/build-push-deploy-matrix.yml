@@ -33,23 +33,3 @@ jobs:
       - name: Deploy
         if: ${{ steps.check-skip.outputs.WAS_SKIPPED != 'true' }}
         run: echo "Deploy by ${{ github.actor }}"
-      - name: Cancelled
-        if: ${{ cancelled() }}
-        run: echo "Canceled"
-      - name: Failure
-        if: ${{ failure() }}
-        run: echo "failure"
-      - name: Cancelled
-        if: ${{ always()  }}
-        run: echo "Canceled"
-  
-  
-  approve-skip:
-    needs: push-build
-    if: ${{ failure() }}
-    name: Build push and deploy
-    runs-on: ubuntu-latest
-    steps:
-    - name: Approve Skip
-      if: ${{ cancelled() }}
-      run: echo "Make skipping succeed"
