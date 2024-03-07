@@ -33,6 +33,10 @@ on:
       - ".github/workflows/api-zuggerwadde.yml"
       - "zuggerwadde/**"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'main/')}}
+
 jobs:
   unit-tests:
     #if: |
@@ -51,8 +55,3 @@ jobs:
       ENVIRONMENT: dev-03-protected
       PROJECT_ID: 'zuggerwadde-32'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
-
-  cancel-pending:
-    needs: build-push-deploy
-    uses: ./.github/workflows/cancel-superseded-workflows.yml
-    secrets: inherit
