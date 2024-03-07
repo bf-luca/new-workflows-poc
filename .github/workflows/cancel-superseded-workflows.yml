@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: viveklak/cancel-workflows@v1.1.1
         with:
-          workflow-run-id: ${{ inputs.workflow-run-id }}
+          #workflow-run-id: ${{ inputs.workflow-run-id }}
           limit-to-previous-successful-run-commit: "true"
           last-successful-run-id: ${{ inputs.last-successful-run-id }}
           dry-run: ${{ inputs.dry-run }}
