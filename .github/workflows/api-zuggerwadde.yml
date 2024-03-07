@@ -45,7 +45,7 @@ jobs:
 
   build-push-deploy:
     name: Build push and deploy the 'zuggerwadde'-image
-    if: ${{ inputs.ENVIRONMENT }}
+    #if: ${{ inputs.ENVIRONMENT }}
     uses: ./.github/workflows/build-push-deploy.yml
     with:
       ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
