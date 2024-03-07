@@ -39,7 +39,7 @@ jobs:
       github.event_name == 'pull_request' ||
       inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
-    environment: dev-01-protected
+    environment: dev-03-protected
     steps:
       - run: echo "Doing unit test and other stuff prior to deploying zuggerwadde on ${{ inputs.ENVIRONMENT }}"
 
