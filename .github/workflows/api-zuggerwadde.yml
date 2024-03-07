@@ -55,3 +55,4 @@ jobs:
   cancel-pending:
     needs: build-push-deploy
     uses: ./.github/workflows/cancel-superseded-workflows.yml
+    secrets: inherit
