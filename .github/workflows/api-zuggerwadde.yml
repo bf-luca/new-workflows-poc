@@ -35,9 +35,9 @@ on:
 
 jobs:
   unit-tests:
-    if: |
-      github.event_name == 'pull_request' ||
-      inputs.PERFORM_TESTS == true
+    #if: |
+    #  github.event_name == 'pull_request' ||
+    #  inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
     environment: dev-03-protected
     steps:
