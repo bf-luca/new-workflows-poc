@@ -48,7 +48,7 @@ jobs:
     #if: ${{ inputs.ENVIRONMENT }}
     uses: ./.github/workflows/build-push-deploy.yml
     with:
-      ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
+      ENVIRONMENT: dev-03-protected
       PROJECT_ID: 'zuggerwadde-32'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
 
