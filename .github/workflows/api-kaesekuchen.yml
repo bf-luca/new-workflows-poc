@@ -8,94 +8,46 @@ on:
         description: Deploy to environment
         required: true
         options:
-          - 01
-          - 02
-          - 03
+          - '01'
+          - '02'
+          - '03'
           - staging
+      PERFORM_TESTS:
+        type: boolean
+        description: Force an image rebuild
+        required: false
+        default: false
       REBUILD_IMAGE:
         type: boolean
         description: Force an image rebuild
         required: false
         default: true
   pull_request:
-    types: [ opened, edited ]
+    types: [ opened, synchronize ]
     paths:
+      - ".github/workflows/api-kaesekuchen.yml"
       - "kaesekuchen/**"
   push:
     branches: [ "main" ]
     paths:
+      - ".github/workflows/api-kaesekuchen.yml"
       - "kaesekuchen/**"
 
 jobs:
-  variables:
-    runs-on: ubuntu-latest
-    outputs:
-      ENVIRONMENT: ${{ steps.set-variables.outputs.ENVIRONMENT}}
-      ANSWER: ${{ steps.set-variables.outputs.ANSWER}}
-    steps:
-      - name: Set Variables
-        id: set-variables
-        run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            # Set values based on manual run
-            echo "ENVIRONMENT=dev-${{ inputs.ENVIRONMENT == 'dev' && format('dev-{0}', inputs.ENVIRONMENT) || inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
-            echo "ANSWER=420" >> $GITHUB_OUTPUT
-          elif [ "${{ github.event_name }}" == "pull_request" ]; then
-            # Set values based on manual run
-            echo "ENVIRONMENT=${{ inputs.ENVIRONMENT }}" >> $GITHUB_OUTPUT
-            echo "ANSWER=420" >> $GITHUB_OUTPUT
-          else
-            # Set values based on merge
-            echo "ENVIRONMENT='production'" >> $GITHUB_OUTPUT
-            echo "ANSWER=42" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Print Variable Summary
-        run: |
-          echo "ENVIRONMENT is ${{ steps.set-variables.outputs.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
-          echo "ANSWER is ${{ steps.set-variables.outputs.ANSWER }}" >> $GITHUB_STEP_SUMMARY
-    
-  tags:
-    runs-on: ubuntu-latest
-    outputs:
-      commit-message: ${{ steps.get-commit-message.outputs }}
-      env-tag: ${{ steps.get-env.outputs }}
-    steps:
-      - name: Get repo
-        uses: actions/checkout@v4
-
-      - name: Get Commit message
-        id: get-commit-message
-        run: echo "commit-message=$(git show -s --format=%s)" >> $GITHUB_OUTPUT
-      
-      - name: Get environment
-        id: get-env
-        run: |
-          if [[ ${{ steps.get-commit-message.outputs }} =~ dev-([0-9][0-9]) ]]; then
-              matched_pattern="${BASH_REMATCH[1]}"
-              echo "env-tag=$matched_pattern" >> $GITHUB_OUTPUT
-          else
-              echo "String does not contain the dev-XX pattern"
-          fi
-      
-
   setup-and-pre-tests:
-    needs: variables
     runs-on: ubuntu-latest
     steps:
       - run: echo "Performing the setup and doing some testing prior to deploying kaesekuchen on $ENVIRONMENT"
   
   build-push-deploy:
     runs-on: ubuntu-latest
-    needs: [ variables, setup-and-pre-tests ]
-    environment: ${{ needs.variables.outputs.ENVIRONMENT }}
+    needs: [ setup-and-pre-tests ]
     steps:
-      - run: echo "Build Push Deploy kaesekuchen on ${{ needs.variables.outputs.ENVIRONMENT }}"
+      - run: echo "Build Push Deploy kaesekuchen"
   
   regression-test:
     runs-on: ubuntu-latest
-    needs: [ variables, build-push-deploy ]
-    environment: ${{ needs.variables.outputs.ENVIRONMENT }}
+    needs: [ build-push-deploy ]
     steps:
       - run: echo "What have you done?!?!???? Everything is broken"
       #- run: exit 1

@@ -1,4 +1,4 @@
-name: api-kirschlolli
+name: api-zuggerwadde
 
 on:
   workflow_dispatch:
@@ -25,13 +25,13 @@ on:
   pull_request:
     types: [ opened, edited ]
     paths:
-      - ".github/workflows/api-kirschlolli.yml"
-      - "kirschlolli/**"
+      - ".github/workflows/api-zuggerwadde.yml"
+      - "zuggerwadde/**"
   push:
     branches: [ "main" ]
     paths:
-      - ".github/workflows/api-kirschlolli.yml"
-      - "kirschlolli/**"
+      - ".github/workflows/api-zuggerwadde.yml"
+      - "zuggerwadde/**"
 
 jobs:
   unit-tests:
@@ -40,22 +40,17 @@ jobs:
       inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Doing unit test and other stuff prior to deploying kirschlolli on ${{ inputs.ENVIRONMENT }}"
+      - run: echo "Doing unit test and other stuff prior to deploying zuggerwadde on ${{ inputs.ENVIRONMENT }}"
 
   build-push-deploy:
-    name: Build push and deploy the 'kirschlolli'-image
+    name: Build push and deploy the 'zuggerwadde'-image
     if: ${{ inputs.ENVIRONMENT }}
     uses: ./.github/workflows/build-push-deploy.yml
     with:
       ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
-      PROJECT_ID: 'kirschlolli-32'
+      PROJECT_ID: 'zuggerwadde-32'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
 
-  build-push-deploy-any-env-rejected:
-    name: Build push and deploy the 'kirschlolli'-image
-    #if: ${{ !inputs.ENVIRONMENT }}
-    uses: ./.github/workflows/build-push-deploy-matrix.yml
-    with:
-      PROJECT_ID: 'kirschlolli-420'
-      SKIP_WITH_STATE: 'rejected'
-    secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
+  cancel-pending:
+    needs: build-push-deploy
+    uses: ./.github/workflows/cancel-superseded-workflows.yml
