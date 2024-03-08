@@ -37,7 +37,7 @@ jobs:
     if: github.event_name == 'pull_request' || inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Performing Unit-Tests"
+      - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
   
   preparation-and-setuo:
     name: Preparations and Setup
