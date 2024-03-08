@@ -40,11 +40,11 @@ jobs:
       - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
 
   unit-tests:
-    if: github.event_name == 'pull_request' || inputs.PERFORM_TESTS == true
+    if: always() && ( inputs.PERFORM_TESTS == false || needs.pre-unit-tests.result == 'success')
     needs: pre-unit-tests
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
+      - run: echo "Performing Unit-Tests main '${{ github.workflow }}-${{ github.ref }}'"
   
   preparation-and-setuo:
     name: Preparations and Setup
