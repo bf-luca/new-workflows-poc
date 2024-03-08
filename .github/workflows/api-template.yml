@@ -59,7 +59,7 @@ jobs:
   # For Merges
   build-push-deploy-matrix:
     name: Build push and deploy the 'kirschlolli'-image
-    if: ${{ inputs.ENVIRONMENT }} && ${{ github.base_ref }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     uses: ./.github/workflows/build-push-deploy-matrix.yml
     with:
       PROJECT_ID: '<my-gcp-project-id>'
