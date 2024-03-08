@@ -9,15 +9,15 @@ on:
         type: string
 
 jobs:
-  push-build:
-    name: Build push and deploy
+  build-push:
+    name: Build push
     runs-on: ubuntu-latest
     steps:
       - name: Build Push
         run: echo "Build and push stuff"
         
   deploy-gke:
-    needs: push-build
+    needs: build-push
     runs-on: ubuntu-latest
     steps:
       - name: Deployment

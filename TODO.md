@@ -13,5 +13,5 @@
 # Main/Master Merge
 
 - Deploy to prod und alle anderen
-- Require Skip(?), Completion log? -> Mapping and notifications of users to Teams
-- Regression Tests 
+- RCancel superseeded
+- Regression Tests via concurrency group

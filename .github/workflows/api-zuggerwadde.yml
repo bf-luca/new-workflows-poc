@@ -23,7 +23,6 @@ on:
         required: false
         default: true
   pull_request:
-    types: [ opened, edited ]
     paths:
       - ".github/workflows/api-zuggerwadde.yml"
       - "zuggerwadde/**"
