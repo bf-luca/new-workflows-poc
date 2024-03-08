@@ -1,4 +1,4 @@
-name: api-kirschlolli
+name: api-template
 
 on:
   workflow_dispatch:
@@ -34,27 +34,36 @@ on:
 
 jobs:
   unit-tests:
-    if: |
-      github.event_name == 'pull_request' ||
-      inputs.PERFORM_TESTS == true
+    if: github.event_name == 'pull_request' || inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Doing unit test and other stuff prior to deploying kirschlolli on ${{ inputs.ENVIRONMENT }}"
+      - run: echo "Performing Unit-Tests"
+  
+  preparation-and-setuo:
+    name: Preparations and Setup
+    if: ${{ inputs.ENVIRONMENT }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Preparations and Setup for workflow template"
 
+  # For Deploying
   build-push-deploy:
     name: Build push and deploy the 'kirschlolli'-image
     if: ${{ inputs.ENVIRONMENT }}
     uses: ./.github/workflows/build-push-deploy.yml
     with:
       ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
-      PROJECT_ID: 'kirschlolli-32'
+      PROJECT_ID: '<my-gcp-project-id>'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
 
-  build-push-deploy-any-env-rejected:
+  # For Merges
+  build-push-deploy-matrix:
     name: Build push and deploy the 'kirschlolli'-image
-    #if: ${{ !inputs.ENVIRONMENT }}
-    uses: ./.github/workflows/build-push-deploy-matrix-skip.yml
+    if: ${{ inputs.ENVIRONMENT }} && ${{ github.base_ref }}
+    uses: ./.github/workflows/build-push-deploy-matrix.yml
     with:
-      PROJECT_ID: 'kirschlolli-420'
-      SKIP_WITH_STATE: 'rejected'
+      PROJECT_ID: '<my-gcp-project-id>'
+      # Concurrency for each branch, might also add a "-dev-XY-" but this one will only on main-merges anyway
+      CONCURRENCY_GROUP: '${{ github.workflow }}-${{ github.ref }}'
+      CANCEL_PREVIOUS_RUNS: true
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
