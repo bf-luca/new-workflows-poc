@@ -33,8 +33,15 @@ on:
       - "template/**"
 
 jobs:
+  pre-unit-tests:
+    if: inputs.PERFORM_TESTS == true
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
+
   unit-tests:
     if: github.event_name == 'pull_request' || inputs.PERFORM_TESTS == true
+    needs: pre-unit-tests
     runs-on: ubuntu-latest
     steps:
       - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
