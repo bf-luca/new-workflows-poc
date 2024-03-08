@@ -56,6 +56,7 @@ jobs:
       PROJECT_ID: '<my-gcp-project-id>'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
 
+
   # For Merges
   build-push-deploy-matrix:
     name: Build push and deploy the 'kirschlolli'-image
@@ -63,7 +64,8 @@ jobs:
     uses: ./.github/workflows/build-push-deploy-matrix.yml
     with:
       PROJECT_ID: '<my-gcp-project-id>'
-      # Concurrency for each branch, might also add a "-dev-XY-" but this one will only on main-merges anyway
-      CONCURRENCY_GROUP: '${{ github.workflow }}-${{ github.ref }}'
-      CANCEL_PREVIOUS_RUNS: true
+    # Concurrency for each branch, might also add a "-dev-XY-" but this one will only on main-merges anyway
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)
