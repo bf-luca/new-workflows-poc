@@ -24,13 +24,13 @@ on:
         default: true
   pull_request:
     paths:
-      - ".github/workflows/api-kirschlolli.yml"
-      - "kirschlolli/**"
+      - ".github/workflows/template.yml"
+      - "template/**"
   push:
     branches: [ "main" ]
     paths:
-      - ".github/workflows/api-kirschlolli.yml"
-      - "kirschlolli/**"
+      - ".github/workflows/template.yml"
+      - "template/**"
 
 jobs:
   unit-tests:
