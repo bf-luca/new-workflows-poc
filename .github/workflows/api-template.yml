@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
+      - run: exit 1
 
   unit-tests:
     if: always() && ( inputs.PERFORM_TESTS == false || needs.pre-unit-tests.result == 'success')
@@ -45,7 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Performing Unit-Tests main '${{ github.workflow }}-${{ github.ref }}'"
-      - run: exit 1
   
   preparation-and-setuo:
     name: Preparations and Setup
