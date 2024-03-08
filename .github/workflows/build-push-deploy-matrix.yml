@@ -5,16 +5,6 @@ on:
         description: "The gcp project id"
         required: true
         type: string
-      CONCURRENCY_GROUP:
-        description: "The concurrency group"
-        required: true
-        type: string
-      CANCEL_PREVIOUS_RUNS:
-        description: "The concurrency group"
-        required: true
-        type: boolean
-        default: true
-
 
 jobs:
   push-build:
@@ -25,9 +15,6 @@ jobs:
     name: Build push and deploy
     runs-on: ubuntu-latest
     environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected', matrix.ENVIRONMENT) || matrix.ENVIRONMENT }}
-    concurrency:
-      group: ${{ inputs.CONCURRENCY_GROUP }}
-      cancel-in-progress: ${{ inputs.CANCEL_PREVIOUS_RUNS }}
 
     steps:
       - name: Checkout
