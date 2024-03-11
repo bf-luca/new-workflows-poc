@@ -45,7 +45,6 @@ jobs:
     environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - run: echo "Doing unit test and other stuff prior to deploying zuggerwadde on ${{ inputs.ENVIRONMENT }}"
-      - run: echo ${{ fromJson('["dev-01", "dev-02", "dev-03", "staging", "production"]') }}
 
   build-push-deploy:
     name: Build push and deploy the 'zuggerwadde'-image
