@@ -9,7 +9,7 @@ on:
         description: Json encoded array of deploy environments
         required: false
         type: string
-        default: "[dev-01, dev-02, dev-03, staging, production]"
+        default: "{ [\"dev-01\", \"dev-02\", \"dev-03\", \"staging\", \"production\"] }"
 
 jobs:
   push-build:
