@@ -5,12 +5,17 @@ on:
         description: "The gcp project id"
         required: true
         type: string
+      MATRIX_ENVIRONMENTS:
+        description: Json encoded array of deploy environments
+        required: false
+        type: string
+        default: "[\"dev-01\", \"dev-02\", \"dev-03\", \"staging\", \"production\"]"
 
 jobs:
   push-build:
     strategy:
       matrix:
-        ENVIRONMENT: ["dev-01", "dev-02", "dev-03", "staging", "production"] # Need restricted deployments, see environment
+        ENVIRONMENT: ${{ fromJson(inputs.MATRIX_ENVIRONMENTS) }} # Need restricted deployments, see environment
         PROJECT_ID: ["42"]
     name: Build push and deploy
     runs-on: ubuntu-latest

@@ -33,7 +33,7 @@ on:
       - "template/**"
 
 jobs:
-  pre-unit-tests:
+  optional-unit-tests:
     if: inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
     steps:
@@ -41,8 +41,8 @@ jobs:
       - run: exit 1
 
   unit-tests:
-    if: always() && ( inputs.PERFORM_TESTS == false || needs.pre-unit-tests.result == 'success')
-    needs: pre-unit-tests
+    if: always() && ( inputs.PERFORM_TESTS == false || needs.optional-unit-tests.result == 'success')
+    needs: optional-unit-tests
     runs-on: ubuntu-latest
     steps:
       - run: echo "Performing Unit-Tests main '${{ github.workflow }}-${{ github.ref }}'"
