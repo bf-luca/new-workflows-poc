@@ -14,16 +14,34 @@ on:
 jobs:
   push-build:
     strategy:
+      #matrix:
+      #  ENVIRONMENT: ${{ fromJson(inputs.MATRIX_ENVIRONMENTS) }} # Need restricted deployments, see environment
       matrix:
-        ENVIRONMENT: ${{ fromJson(inputs.MATRIX_ENVIRONMENTS) }} # Need restricted deployments, see environment
+        SHORT_ENV: ['01', '02', '03']
+        ADD_DEV: [ true ]
+        ADD_PROTECTED: [ true ]
+        include:
+          - SHORT_ENV: 'staging'
+            ADD_DEV: false
+            ADD_PROTECTED: false
+          - SHORT_ENV: 'production'
+            ADD_DEV_PREFIX: false
+            ADD_PROTECTED: false
     name: Build push and deploy
     runs-on: ubuntu-latest
-    environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected', matrix.ENVIRONMENT) || matrix.ENVIRONMENT }}
+    #environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected', matrix.ENVIRONMENT) || matrix.ENVIRONMENT }}
+    environment: ${{ matrix.ADD_DEV_PREFIX && 'dev-' || ''}}${{ matrix.SHORT_ENV }}${{ matrix.ADD_PROTECTED && '-protected' || ''}}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build Push
-        run: echo "Build and push stuff to ${{ matrix.ENVIRONMENT }}"
+        run: echo "Build and push stuff to ${{ matrix.SHORT_ENV }}"
+      - name: add dev-
+        if: ${{ matrix.ADD_DEV_PREFIX}}
+        run: echo "Adding dev-"
+      - name: add -protected
+        if: ${{ matrix.ADD_PROTECTED}}
+        run: echo "Adding -protected"
       - name: Deploy
         run: echo "Deploy by ${{ github.actor }}"
