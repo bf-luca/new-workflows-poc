@@ -25,7 +25,6 @@ jobs:
           - SHORT_ENV: 'production'
     name: Build push and deploy
     runs-on: ubuntu-latest
-    #environment: ${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected', matrix.ENVIRONMENT) || matrix.ENVIRONMENT }}
     environment: ${{ matrix.ADD_DEV_PREFIX && 'dev-' || ''}}${{ matrix.SHORT_ENV }}${{ matrix.ADD_PROTECTED_SUFFIX && '-protected' || ''}}
 
     steps:
