@@ -9,6 +9,7 @@ on:
 jobs:
   push-build:
     strategy:
+      max-parallel: 1
       matrix:
         ENVIRONMENT: ["dev-01", "dev-02", "dev-03", "staging", "production"] # Need restricted deployments, see environment
         PROJECT_ID: ["42"]
