@@ -14,8 +14,7 @@ on:
 jobs:
   push-build:
     strategy:
-      #matrix:
-      #  ENVIRONMENT: ${{ fromJson(inputs.MATRIX_ENVIRONMENTS) }} # Need restricted deployments, see environment
+      max-parallel: 1
       matrix:
         SHORT_ENV: ['01', '02', '03']
         ADD_DEV_PREFIX: [ true ]
@@ -25,7 +24,7 @@ jobs:
           - SHORT_ENV: 'production'
     name: Build push and deploy
     runs-on: ubuntu-latest
-    environment: ${{ matrix.ADD_DEV_PREFIX && 'dev-' || ''}}${{ matrix.SHORT_ENV }}${{ matrix.ADD_PROTECTED_SUFFIX && '-protected' || ''}}
+    environment: ${{ matrix.ENVIRONMENT }} #${{ startsWith(matrix.ENVIRONMENT, 'dev-') && format('{0}-protected', matrix.ENVIRONMENT) || matrix.ENVIRONMENT }}
 
     steps:
       - name: Checkout

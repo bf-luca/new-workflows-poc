@@ -1,0 +1,26 @@
+on:
+  workflow_dispatch:
+    inputs:
+      ENV:
+        description: "An env (dev-XY, staging, production)"
+        required: true
+        type: string
+      OVERRIDE:
+        description: "Optional value for overriding"
+        required: false
+        type: string
+
+env:
+  MULTI_TERNARY: ${{ (inputs.ENV == 'production' && 'a') || (inputs.ENV == 'staging' && 'b') || 'c' }}
+  OPTIONAL: ${{ inputs.OVERRIDE ||  (inputs.ENV == 'production' && 'a') || (inputs.ENV == 'staging' && 'b') || 'c' }}
+
+jobs:
+  push-build:
+    name: Variables test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print multi
+        run: echo "Build and push stuff to ${{ env.MULTI_TERNARY }}"
+      - name: Print override
+        run: echo "Build and push stuff to ${{ env.OPTIONAL }}"
