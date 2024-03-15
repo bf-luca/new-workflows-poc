@@ -47,7 +47,7 @@ jobs:
       - run: echo "Performing Unit-Tests main '${{ github.workflow }}-${{ github.ref }}'"
   
   preparation-and-setuo:
-    name: Preparations and Setup
+    name: Preparations and Setup 
     if: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
     steps:
