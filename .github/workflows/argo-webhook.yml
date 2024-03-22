@@ -15,12 +15,6 @@ jobs:
         run: echo "Created and pushed manifest" >> $GITHUB_STEP_SUMMARY
       - name: Wait a bit (argo setup...)
         run: sleep 10
-      - name: List missing
-        run: |
-          curl -X GET https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/pending_deployments \
-          -H 'Accept: application/vnd.github+json' \
-          -H 'Authorization: Bearer ${{ secrets.WF_PAT }}' \
-          -H "X-GitHub-Api-Version: 2022-11-28"
       - name: Simulate argo callback (success env)
         run: |
           curl -X POST https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/pending_deployments \
