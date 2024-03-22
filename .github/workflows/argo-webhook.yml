@@ -26,12 +26,13 @@ jobs:
           curl -X POST https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/pending_deployments \
           -H 'Accept: application/vnd.github+json' \
           -H 'Authorization: Bearer ${{ secrets.WF_PAT }}' \
-          -d '{"environment_ids":[2548142524],"state":"rejected","comment":"Ship it!"}'
+          -d '{"environment_ids":[2548142524],"state":"approved","comment":"Ship it!"}'
     
   argo-callback:
     strategy:
       matrix:
         environment: [argo-success, argo-failure]
+      fail-fast: false
     runs-on: ubuntu-latest
     environment: ${{ matrix.environment }}
     steps:
