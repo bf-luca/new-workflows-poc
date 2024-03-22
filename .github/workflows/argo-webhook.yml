@@ -30,9 +30,7 @@ jobs:
     steps:
       - name: Accept
         run: echo "Argo success" >> $GITHUB_STEP_SUMMARY
-      - name: Denied
-        if: !cancelled()
-        run: echo "Argo failed"
+      
   # Envs:
   # argo-success: 2548148387
   # argo-failure: 2548142524
