@@ -29,7 +29,7 @@ jobs:
           -d '{"environment_ids":[2548148387],"state":"approved","comment":"Ship it!"}'
       - name: Simulate argo callback (failure env)
         run: |
-          curl -X POST https://api.github.com/repos/${{ github.repository }}/runs/${{ github.run_id }}/pending_deployments \
+          curl -X POST https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/pending_deployments \
           -H 'Accept: application/vnd.github+json' \
           -H 'Authorization: Bearer ${{ secrets.WF_PAT }}' \
           -d '{"environment_ids":[2548142524],"state":"rejected","comment":"Ship it!"}'
