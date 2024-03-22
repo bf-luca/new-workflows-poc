@@ -7,7 +7,7 @@ inputs:
   DEPLOY_PAT:
     description: 'PAT to allow deployments'
   REPO_FULL_NAME:
-    descriptoin: 'Full name of the repo (i.e. "REPO_OWNER/REPO_NAME"). Use: github.event.repository.full_name'
+    description: 'Full name of the repo (i.e. "REPO_OWNER/REPO_NAME"). Use: github.event.repository.full_name'
     required: true
   WORKFLOW_RUN_ID:
     description: 'ID of the workflow run to be canceled'

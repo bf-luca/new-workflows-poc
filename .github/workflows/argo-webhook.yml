@@ -1,0 +1,45 @@
+on:
+  workflow_dispatch:
+    inputs:
+      RESULT_IN:
+        type: choice
+        options:
+          - success
+          - failure
+
+jobs:
+  create-deploy-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Some super cool workflow creating manifests
+        run: echo "Created and pushed manifest" >> $GITHUB_STEP_SUMMARY
+      - name: Wait a bit (argo setup...)
+        run: sleep 10
+      - name: Simulate argo callback (success env)
+        run: |
+          curl -X POST https://api.github.com/repos/${{ github.repository }}/runs/${{ github.run_id }}/pending_deployments \
+          -H 'Accept: application/vnd.github+json' \
+          -H 'Authorization: Bearer ${{ secrets.WF_PAT }} \
+          -d '{"environment_ids":[2548148387],"state":"${{ inputs.RESULT_IN == 'success' && 'approved' || 'rejected' }}","comment":"Ship it!"}'
+      - name: Simulate argo callback (failure env)
+        run: |
+          curl -X POST https://api.github.com/repos/${{ github.repository }}/runs/${{ github.run_id }}/pending_deployments \
+          -H 'Accept: application/vnd.github+json' \
+          -H 'Authorization: Bearer ${{ secrets.WF_PAT }} \
+          -d '{"environment_ids":[2548142524],"state":"${{ inputs.RESULT_IN == 'failure' && 'approved' || 'rejected' }}","comment":"Ship it!"}'
+    
+  argo-callback:
+    strategy:
+      matrix:
+        environment: [argo-success, argo-failure]
+    runs-on: ubuntu-latest
+    environment: ${{ matrix.environment }}
+    steps:
+      - name: Accept
+        run: echo "Argo requested deployment for ${{ matrix.environment }}" >> $GITHUB_STEP_SUMMARY
+      - name: Denie
+        if: cancelled()
+        run: echo "Argo rejected deployment for ${{ matrix.environment }}"
+  # Envs:
+  # argo-success: 2548148387
+  # argo-failure: 2548142524

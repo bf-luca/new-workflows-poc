@@ -42,7 +42,7 @@ jobs:
     #  github.event_name == 'pull_request' ||
     #  inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
-    environment: dev-03-protected
+    environment: ${{ inputs.ENVIRONMENT }}
     steps:
       - run: echo "Doing unit test and other stuff prior to deploying zuggerwadde on ${{ inputs.ENVIRONMENT }}"
 
@@ -51,6 +51,6 @@ jobs:
     #if: ${{ inputs.ENVIRONMENT }}
     uses: ./.github/workflows/build-push-deploy.yml
     with:
-      ENVIRONMENT: dev-03-protected
+      ENVIRONMENT: ${{ inputs.ENVIRONMENT }}
       PROJECT_ID: 'zuggerwadde-32'
     secrets: inherit # Pass secrets (i.e. SUDO_CONTAINER_PASSWORD)

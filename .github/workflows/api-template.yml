@@ -33,14 +33,21 @@ on:
       - "template/**"
 
 jobs:
-  unit-tests:
-    if: github.event_name == 'pull_request' || inputs.PERFORM_TESTS == true
+  optional-unit-tests:
+    if: inputs.PERFORM_TESTS == true
     runs-on: ubuntu-latest
     steps:
       - run: echo "Performing Unit-Tests '${{ github.workflow }}-${{ github.ref }}'"
+
+  unit-tests: # Only continue if the optional tests completed successfully
+    if: always() && ( inputs.PERFORM_TESTS == false || needs.optional-unit-tests.result == 'success')
+    needs: optional-unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Performing Unit-Tests main '${{ github.workflow }}-${{ github.ref }}'"
   
   preparation-and-setuo:
-    name: Preparations and Setup
+    name: Preparations and Setup 
     if: ${{ inputs.ENVIRONMENT }}
     runs-on: ubuntu-latest
     steps:
@@ -64,7 +71,7 @@ jobs:
   # For Merges
   build-push-deploy-matrix:
     name: Build push and deploy the 'kirschlolli'-image
-    if: ${{ github.ref == 'refs/heads/main' }}
+    #if: ${{ github.ref == 'refs/heads/main' }}
     uses: ./.github/workflows/build-push-deploy-matrix.yml
     with:
       PROJECT_ID: '<my-gcp-project-id>'
