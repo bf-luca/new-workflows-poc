@@ -27,10 +27,10 @@ jobs:
     environment: argo-result
     steps:
       - name: Accept
-        run: echo "Argo requested deployment for ${{ matrix.environment }}" >> $GITHUB_STEP_SUMMARY
+        run: echo "Argo success" >> $GITHUB_STEP_SUMMARY
       - name: Denie
         if: !cancelled()
-        run: echo "Argo rejected deployment for ${{ matrix.environment }}"
+        run: echo "Argo failed"
   # Envs:
   # argo-success: 2548148387
   # argo-failure: 2548142524
