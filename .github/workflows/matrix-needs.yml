@@ -1,0 +1,22 @@
+name: Needs test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  matrix-stuff:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix: 
+            value: ["01", "02", "03", "04", "05", "06", "07", "08", "09"]
+        max-parallel: 1
+    steps:
+      - run: echo "Building critical css after receiving the webhook from argo"
+      - run: sleep 2
+
+  post-job:
+    needs: matrix-stuff
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Yay"
+    
