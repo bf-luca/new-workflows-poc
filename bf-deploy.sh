@@ -258,7 +258,7 @@ function deploy_affected_workflows() {
     # Probably no changed files (commited)
     [ $? -ne 0 ] && echo $wfs >&2 && exit 1
     # No affected workflows
-    [ $wfs == "" ] && echo "Did not find any workflows affected by your changes!" >&2 && exit 1
+    [ "$wfs" == "" ] && echo "Did not find any workflows triggered by your changes!" >&2 && exit 1
     deploy_workflow $wfs
 }
 

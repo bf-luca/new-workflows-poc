@@ -26,11 +26,13 @@ on:
     paths:
       - ".github/workflows/api-kirschlolli.yml"
       - "kirschlolli/**"
+      - "bf-deploy.sh"
   push:
     branches: [ "main" ]
     paths:
       - ".github/workflows/api-kirschlolli.yml"
       - "kirschlolli/**"
+      - "bf-deploy.sh"
 
 jobs:
   unit-tests:
