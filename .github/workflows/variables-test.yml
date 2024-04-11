@@ -9,6 +9,15 @@ on:
         description: "Optional value for overriding"
         required: false
         type: string
+      BROWSER:
+        type: choice
+        description: "Browser to test with"
+        required: false
+        options:
+          - chrome
+          - firefox
+          - edge
+        default: none
 
 env:
   MULTI_TERNARY: ${{ (inputs.ENV == 'production' && 'a') || (inputs.ENV == 'staging' && 'b') || 'c' }}
@@ -24,5 +33,5 @@ jobs:
         run: echo "Build and push stuff to ${{ env.MULTI_TERNARY }}"
       - name: Print override
         run: echo "Build and push stuff to ${{ env.OPTIONAL }}"
-      - name: "Starts with glob: ${{ startsWith('C123_', 'C[0-9]')}}"
+      - name: "Starts with glob: ${{ inputs.BROWSER }}"
         run: echo "Hi"
