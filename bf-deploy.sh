@@ -1,6 +1,7 @@
 #!/bin/bash
 
 declare -r DEFAULT_WF_TRIGGERS_FILE=.triggers.json
+declare -r WORKFLOWS_DIR=.github/workflows/
 
 # Usage: change_files=($(get_changed_files))
 function get_changed_files() {
@@ -146,7 +147,7 @@ function has_cached_workflow_trigger() {
 function has_cached_workflow_trigger2() {
     changed_files=($(get_changed_files))
     if [ -z $changed_files ] ; then
-        echo "No changes to check against provided" >&2
+        echo "There are no changes to check against..." >&2
         return 1 #false
     fi
 
@@ -156,7 +157,6 @@ function has_cached_workflow_trigger2() {
         wildcard_patterns=($(cat "triggers.json" | jq -r ".$workflow[]"))
 
         if [ ${#wildcard_patterns[@]} -eq 0 ] ; then
-            #echo "false"
             return 1 # false
         fi
 
@@ -172,7 +172,7 @@ function has_cached_workflow_trigger2() {
 }
 
 function check_affected() {
-    print_list="$1"
+    print_pretty=$( [ "$1" == "--pretty" ] && echo true || echo false )
     shift
     workflows=".github/workflows/*.yml" # Only iterate over top-level of the directory 
     changed_files=($(get_changed_files))
@@ -182,7 +182,7 @@ function check_affected() {
         exit 1
     fi
 
-    if [ "$print_list" != "list" ] ; then
+    if $print_pretty ; then
         echo $'Checking which workflows are affected by your changes...\n'
     fi
 
@@ -190,15 +190,15 @@ function check_affected() {
         [ -n "$workflow" ] || continue
 
         if has_workflow_trigger $workflow ${changed_files[@]} ; then
-            if [ "$print_list" == "list" ] ; then
-                echo -n "$workflow,"
-            else
+            if $print_pretty ; then
                 echo "- $workflow"
+            else
+                echo -n "${workflow#"$WORKFLOWS_DIR"} "
             fi
         fi
     done
 
-    if [ "$print_list" != "list" ] ; then
+    if $print_pretty ; then
         echo $'\nDone checking affected workflows.'
     fi
 }
@@ -254,12 +254,12 @@ function deploy_workflow() {
 }
 
 function deploy_affected_workflows() {
-    wfs=$(check_affected list)
+    wfs=$(check_affected)
     # Probably no changed files (commited)
     [ $? -ne 0 ] && echo $wfs >&2 && exit 1
     # No affected workflows
     [ "$wfs" == "" ] && echo "Did not find any workflows triggered by your changes!" >&2 && exit 1
-    deploy_workflow $wfs
+    deploy_workflow $1 $wfs
 }
 
 
@@ -273,7 +273,7 @@ function do_task() {
 
         affected)
             shift
-            check_affected
+            check_affected --pretty
             ;;
         
         deploy)
@@ -285,7 +285,7 @@ function do_task() {
         deploy-affected)
             shift
             check_gh_login --silent
-            deploy_affected_workflows
+            deploy_affected_workflows $1
             ;;
         
         testing)

@@ -24,3 +24,5 @@ jobs:
         run: echo "Build and push stuff to ${{ env.MULTI_TERNARY }}"
       - name: Print override
         run: echo "Build and push stuff to ${{ env.OPTIONAL }}"
+      - name: "Starts with glob: ${{ startsWith('C123_', 'C*_')}}"
+        run: echo "Hi"
