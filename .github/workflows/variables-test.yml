@@ -11,13 +11,13 @@ on:
         type: string
       BROWSER:
         type: choice
-        description: "Browser to test with"
+        description: "Browser to test with. The default browser, if none is specified, is the built-in Electron browser."
         required: false
         options:
+          - none
           - chrome
           - firefox
           - edge
-        default: none
 
 env:
   MULTI_TERNARY: ${{ (inputs.ENV == 'production' && 'a') || (inputs.ENV == 'staging' && 'b') || 'c' }}
@@ -27,6 +27,7 @@ jobs:
   push-build:
     name: Variables test
     runs-on: ubuntu-latest
+    if: ${{ inputs.BROWSER == 'none' }}
 
     steps:
       - name: Print multi
@@ -35,3 +36,6 @@ jobs:
         run: echo "Build and push stuff to ${{ env.OPTIONAL }}"
       - name: "Starts with glob: ${{ inputs.BROWSER }}"
         run: echo "Hi"
+      - name: End successfully if canceled
+        if: ${{ cancelled() }}
+        run: echo "Nothing to do"
