@@ -8,6 +8,9 @@ on:
 
 jobs:
   test:
+    strategy:
+      matrix:
+        x: ['y']
     uses: ./.github/workflows/reusable-wf.yml
     with:
       SKIP: ${{ !inputs.SKIP }}
