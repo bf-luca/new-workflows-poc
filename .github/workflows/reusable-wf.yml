@@ -11,8 +11,5 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ inputs.SKIP == true }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: End successfully if canceled
-        if: ${{ cancelled() }}
-        run: echo "Nothing to do"
+      - name: test
+        run: echo "Hi"

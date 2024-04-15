@@ -11,3 +11,11 @@ jobs:
     uses: ./.github/workflows/reusable-wf.yml
     with:
       SKIP: ${{ inputs.SKIP }}
+  skipedibap:
+    name: skipedibap
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
+    steps:
+      - name: "x"
+        run: echo "Skipped."
