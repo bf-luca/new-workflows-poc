@@ -10,12 +10,12 @@ jobs:
   test:
     uses: ./.github/workflows/reusable-wf.yml
     with:
-      SKIP: ${{ inputs.SKIP }}
+      SKIP: ${{ !inputs.SKIP }}
   skipedibap:
     name: skipedibap
     needs: test
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && ! failure() }}
     steps:
       - name: "x"
-        run: echo "Skipped."
+        run: echo "${{ needs.test.result }}"
