@@ -1,41 +1,13 @@
 on:
   workflow_dispatch:
     inputs:
-      ENV:
-        description: "An env (dev-XY, staging, production)"
-        required: true
-        type: string
-      OVERRIDE:
+      SKIP:
         description: "Optional value for overriding"
         required: false
-        type: string
-      BROWSER:
-        type: choice
-        description: "Browser to test with. The default browser, if none is specified, is the built-in Electron browser."
-        required: false
-        options:
-          - none
-          - chrome
-          - firefox
-          - edge
-
-env:
-  MULTI_TERNARY: ${{ (inputs.ENV == 'production' && 'a') || (inputs.ENV == 'staging' && 'b') || 'c' }}
-  OPTIONAL: ${{ inputs.OVERRIDE ||  (inputs.ENV == 'production' && 'a') || (inputs.ENV == 'staging' && 'b') || 'c' }}
+        type: boolean
 
 jobs:
-  push-build:
-    name: Variables test
-    runs-on: ubuntu-latest
-    if: ${{ inputs.BROWSER == 'none' }}
-
-    steps:
-      - name: Print multi
-        run: echo "Build and push stuff to ${{ env.MULTI_TERNARY }}"
-      - name: Print override
-        run: echo "Build and push stuff to ${{ env.OPTIONAL }}"
-      - name: "Starts with glob: ${{ inputs.BROWSER }}"
-        run: echo "Hi"
-      - name: End successfully if canceled
-        if: ${{ cancelled() }}
-        run: echo "Nothing to do"
+  test:
+    uses: ./.github/workflows/reusable-wf.yml
+    with:
+      SKIP: ${{ inputs.SKIP }}
