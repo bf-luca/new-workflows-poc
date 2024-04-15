@@ -15,7 +15,7 @@ jobs:
     name: skipedibap
     needs: test
     runs-on: ubuntu-latest
-    if: ${{ !cancelled() && ! failure() }}
+    if: ${{ !cancelled() && !failure() && needs.test.result == 'skipped' }}
     steps:
       - name: "x"
         run: echo "${{ needs.test.result }}"
