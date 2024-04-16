@@ -49,7 +49,7 @@ jobs:
             echo "TEST_SUITE_GLOB=cypress/e2e/**/${{ inputs.TEST_SUITE }}_*.cy.js" >> "$GITHUB_OUTPUT"
           else
             # Execute all files with a path
-            echo "TEST_SUITE_GLOB=cypress/e2e/${{ inputs.TEST_SUITE }}**.cy.js" >> "$GITHUB_OUTPUT"
+            echo "TEST_SUITE_GLOB=cypress/e2e/${{ inputs.TEST_SUITE }}/**/*.cy.js" >> "$GITHUB_OUTPUT"
           fi
       - name: verify
         run: echo ${{ steps.generate-test-suite-glob.outputs.TEST_SUITE_GLOB }}
