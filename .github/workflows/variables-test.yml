@@ -43,7 +43,7 @@ jobs:
       - name: Create test suite glob
         id: generate-test-suite-glob
         run: |
-          if [[ "${{ inputs.TEST_SUITE }}" ~= ^C[1-9][0-9]*$ ]] ; then
+          if [[ "${{ inputs.TEST_SUITE }}" =~ ^C[1-9][0-9]*$ ]] ; then
             # Execute a specific test number
             echo "TEST_SUITE_GLOB=cypress/e2e/**/${{ inputs.TEST_SUITE }}_*.cy.js" >> "$GITHUB_OUTPUT"
           else
