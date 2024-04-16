@@ -29,7 +29,8 @@ jobs:
           while read -rd $'' line
           do
             export "$line"
-          done < <(jq -r <<<"$SECRETS" \
+            echo "$line"
+          done < <(jq -r <<<"$ALL_SECRETS" \
             'to_entries|map("\(.key)=\(.value)\u0000")[]')
 
           envsubst < .env.template > .env
