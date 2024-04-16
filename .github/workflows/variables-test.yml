@@ -5,6 +5,7 @@ on:
         description: "Optional value for overriding"
         required: false
         type: boolean
+        default: true
       TEST_SUITE:
         type: string
         required: true
@@ -51,4 +52,4 @@ jobs:
             echo "TEST_SUITE_GLOB=cypress/e2e/${{ inputs.TEST_SUITE }}**.cy.js"
           fi
       - name: verify
-        run: echo $TEST_SUITE_GLOB
+        run: echo ${{ steps.generate-test-suite-glob.outputs.TEST_SUITE_GLOB }}
