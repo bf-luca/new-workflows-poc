@@ -31,5 +31,7 @@ jobs:
           done
 
           envsubst < .env.template > .env
+        env:
+          ALL_SECRETS: "${{ toJson(secrets) }}"
       - name: verify
         run: cat .env
