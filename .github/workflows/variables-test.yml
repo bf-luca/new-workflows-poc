@@ -28,4 +28,4 @@ jobs:
             export "$line"
           done
 
-          envsubst < .env.template > .env
+          envsubst < ./.env.template > .env
