@@ -5,6 +5,10 @@ on:
         description: "Optional value for overriding"
         required: false
         type: boolean
+      TEST_SUITE:
+        type: string
+        required: true
+        description: 'Which test suite is executed. Relects the folder structure in "cypress/e2e/..."'
 
 jobs:
   test:
@@ -36,5 +40,15 @@ jobs:
           envsubst < .env.template > .env
         env:
           ALL_SECRETS: "${{ toJson(secrets) }}"
+      - name: Create test suite glob
+        id: generate-test-suite-glob
+        run: |
+          if [[ "${{ inputs.TEST_SUITE }}" ~= ^C[1-9][0-9]*$ ]] ; then
+            # Execute a specific test number
+            echo "TEST_SUITE_GLOB=cypress/e2e/**/${{ inputs.TEST_SUITE }}_*.cy.js" >> "$GITHUB_OUTPUT"
+          else
+            # Execute all files with a path
+            echo "TEST_SUITE_GLOB=cypress/e2e/${{ inputs.TEST_SUITE }}**.cy.js"
+          fi
       - name: verify
-        run: cat .env
+        run: echo $TEST_SUITE_GLOB
