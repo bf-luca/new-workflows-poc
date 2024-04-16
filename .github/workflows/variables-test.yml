@@ -31,3 +31,5 @@ jobs:
           done
 
           envsubst < .env.template > .env
+      - name: verify
+        run: cat .env
