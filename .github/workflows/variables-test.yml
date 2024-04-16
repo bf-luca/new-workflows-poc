@@ -22,10 +22,12 @@ jobs:
     steps:
       - name: "x"
         run: echo "${{ needs.test.result }}"
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Read secrets and prepare test system .env
         run: |
           printenv | grep -E '^SECRET_' | while read -r line; do
             export "$line"
           done
 
-          envsubst < ./.env.template > .env
+          envsubst < .env.template > .env
